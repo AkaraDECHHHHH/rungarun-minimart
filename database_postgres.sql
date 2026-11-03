@@ -1,0 +1,94 @@
+-- รุ่งอรุณ มินิมาร์ท: สำหรับ PostgreSQL (Render, Railway, etc.)
+-- Import ไฟล์นี้ผ่าน psql หรือ PostgreSQL GUI เช่น pgAdmin, DBeaver
+
+-- ตารางสินค้า
+CREATE TABLE IF NOT EXISTS products (
+  seq SERIAL PRIMARY KEY,
+  id VARCHAR(30) NOT NULL UNIQUE,
+  name VARCHAR(200) NOT NULL,
+  cat VARCHAR(100) NOT NULL DEFAULT '',
+  price DECIMAL(10,2) NOT NULL DEFAULT 0,
+  stock INT NOT NULL DEFAULT 0,
+  exp DATE NULL,
+  em VARCHAR(16) NOT NULL DEFAULT '',
+  wh VARCHAR(100) NOT NULL DEFAULT '',
+  img VARCHAR(255) NOT NULL DEFAULT ''
+);
+
+-- ตารางโปรโมชั่น
+CREATE TABLE IF NOT EXISTS promos (
+  seq SERIAL PRIMARY KEY,
+  t VARCHAR(200) NOT NULL,
+  d VARCHAR(500) NOT NULL DEFAULT '',
+  k VARCHAR(10) NOT NULL DEFAULT 'pct',
+  min_amt DECIMAL(10,2) NOT NULL DEFAULT 0,
+  v DECIMAL(10,2) NOT NULL DEFAULT 0,
+  cat VARCHAR(100) NOT NULL DEFAULT '',
+  q INT NOT NULL DEFAULT 0
+);
+
+-- ตารางโกดัง
+CREATE TABLE IF NOT EXISTS warehouses (
+  seq SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  addr VARCHAR(300) NOT NULL DEFAULT ''
+);
+
+-- ตารางใบสั่งซื้อ
+CREATE TABLE IF NOT EXISTS purchase_orders (
+  seq SERIAL PRIMARY KEY,
+  sup VARCHAR(200) NOT NULL,
+  pid VARCHAR(30) NOT NULL DEFAULT '',
+  qty INT NOT NULL DEFAULT 0,
+  cost DECIMAL(10,2) NOT NULL DEFAULT 0,
+  st VARCHAR(20) NOT NULL DEFAULT 'รอรับ'
+);
+
+-- ตารางการขาย
+CREATE TABLE IF NOT EXISTS sales (
+  seq SERIAL PRIMARY KEY,
+  sale_no VARCHAR(20) NOT NULL UNIQUE,
+  dt TIMESTAMP NOT NULL,
+  net DECIMAL(10,2) NOT NULL DEFAULT 0
+);
+
+-- ตารางรายการในใบเสร็จ
+CREATE TABLE IF NOT EXISTS sale_items (
+  seq SERIAL PRIMARY KEY,
+  sale_no VARCHAR(20) NOT NULL,
+  n VARCHAR(200) NOT NULL,
+  q INT NOT NULL DEFAULT 1,
+  p DECIMAL(10,2) NOT NULL DEFAULT 0
+);
+CREATE INDEX IF NOT EXISTS sale_items_sale_no_idx ON sale_items(sale_no);
+
+-- ตารางคิว
+CREATE TABLE IF NOT EXISTS queue (
+  n SERIAL PRIMARY KEY,
+  ph VARCHAR(20) NULL,
+  items TEXT NOT NULL,
+  created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ตาราง metadata
+CREATE TABLE IF NOT EXISTS meta (
+  k VARCHAR(30) PRIMARY KEY,
+  v VARCHAR(100) NOT NULL
+);
+
+-- ตารางสมาชิก (ถ้าไม่มีตาราง customer เดิม)
+CREATE TABLE IF NOT EXISTS members (
+  seq SERIAL PRIMARY KEY,
+  phone VARCHAR(20) NOT NULL UNIQUE,
+  name VARCHAR(200) NOT NULL,
+  pw VARCHAR(100) NOT NULL DEFAULT '',
+  pts INT NOT NULL DEFAULT 0
+);
+
+-- ตารางพนักงาน
+CREATE TABLE IF NOT EXISTS staff (
+  seq SERIAL PRIMARY KEY,
+  name VARCHAR(200) NOT NULL,
+  role VARCHAR(100) NOT NULL DEFAULT '',
+  phone VARCHAR(20) NOT NULL DEFAULT ''
+);
