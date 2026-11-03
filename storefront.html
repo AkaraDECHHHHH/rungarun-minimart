@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>รุ่งอรุณ มินิมาร์ท</title>
+<style>
+:root{--bg:#F5F7FA;--card:#FFFFFF;--tx:#263238;--mu:#717171;--bd:#DDE5EC;--pr:#388E3B;--ac:#4CAF50;--pt:#E8F5E9;--on:#FFFFFF;--bad:#E53835;--ok:#2E7D31;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#182125;--card:#263238;--tx:#F5F7FA;--mu:#ABBED1;--bd:#3A4950;--pr:#66BB69;--ac:#81C784;--pt:#1B3A20;--on:#103E13;--bad:#FF8A80;--ok:#81C784}}
+:root[data-theme="dark"]{--bg:#182125;--card:#263238;--tx:#F5F7FA;--mu:#ABBED1;--bd:#3A4950;--pr:#66BB69;--ac:#81C784;--pt:#1B3A20;--on:#103E13;--bad:#FF8A80;--ok:#81C784}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:"Noto Sans Thai","Sarabun",system-ui,sans-serif;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:10}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--card);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px;padding:10px 16px;flex-wrap:wrap}
+.logo{font-weight:700;font-size:1.15rem;color:var(--pr)}
+nav{margin-left:auto;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;border:1px solid var(--bd);background:var(--card);border-radius:10px;padding:7px 14px}
+button.p{background:var(--pr);color:var(--on);border-color:var(--pr);font-weight:600}
+input,select{background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:8px 12px;width:100%}
+main{max-width:1100px;margin:0 auto;padding:16px}
+.hero{background:linear-gradient(120deg,#237D31,#4CAF50);color:#fff;border-radius:18px;padding:22px;margin-bottom:16px}
+.hero h1{margin:0 0 4px;font-size:1.6rem}
+.rule{display:inline-block;background:rgba(255,255,255,.22);border-radius:20px;padding:3px 12px;margin-top:8px;font-size:.9rem}
+.promos{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin-bottom:16px}
+.promo{background:var(--pt);border:1px dashed var(--ac);border-radius:12px;padding:10px 14px}
+.promo b{color:var(--pr)}
+.lay{display:grid;grid-template-columns:1fr 320px;gap:16px;align-items:start}
+@media(max-width:820px){.lay{grid-template-columns:1fr}}
+.tools{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.tools input{flex:1;min-width:150px}.tools select{width:auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:3px}
+.pic{font-size:3rem;text-align:center;background:var(--pt);border-radius:10px;padding:8px}
+.card h3{margin:4px 0 0;font-size:1rem}
+.price{color:var(--pr);font-weight:700;font-size:1.1rem}
+.mu{color:var(--mu);font-size:.85rem}
+.tag{font-size:.75rem;border-radius:8px;padding:1px 8px;background:#FFF8E1;color:#8D6E00}
+.panel{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 70px)}
+.panel h2{margin:0 0 8px;font-size:1.1rem}
+.row{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:4px 0}
+.line{border-top:1px solid var(--bd);margin:8px 0}
+.q{display:flex;gap:4px;align-items:center}.q button{padding:1px 9px}
+.tot{font-size:1.3rem;font-weight:700;color:var(--pr)}
+.ok{color:var(--ok)}.bad{color:var(--bad)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:20;padding:16px}
+.box{background:var(--card);border-radius:16px;padding:20px;width:100%;max-width:380px}
+.box label{display:block;margin:8px 0 2px;font-size:.9rem}
+</style>
+</head>
+<body>
+<header><span class="logo">🌅 รุ่งอรุณ มินิมาร์ท</span><nav id="nav"></nav></header>
+<main id="app"></main>
+<div id="modal"></div>
+<script>
+const K="rungarun2",NOW=new Date();
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const B=n=>"฿"+Number(n).toLocaleString("th-TH",{maximumFractionDigits:2});
+const fd=e=>!e?"-":new Date(e).toLocaleDateString("th-TH",{day:"numeric",month:"short",year:"2-digit"});
+const day=e=>new Date(new Date(NOW).setDate(NOW.getDate()+e)).toISOString().slice(0,10);
+const D0={products:[],members:[],promos:[],queue:[]};
+let S=D0;const API="api.php";
+async function boot(){try{const d=await(await fetch(API+"?action=load")).json();if(d.error)throw d.error;S={...D0,...d}}catch(e){alert("เชื่อมต่อฐานข้อมูลไม่ได้: "+e)}render()}
+const pic=(p,s)=>p.img?`<img src="${esc(p.img)}" alt="" style="${s?`width:${s}px;height:${s}px`:"width:100%;height:120px;display:block"};object-fit:cover;border-radius:8px;vertical-align:middle">`:`<span style="font-size:${s?Math.round(s*.8):48}px">📦</span>`;
+const prod=id=>S.products.find(p=>p.id===id),mem=ph=>S.members.find(m=>m.phone===ph);
+let cur=null,cart=[],q="",cat="ทั้งหมด",msg="";
+const pts=n=>Math.floor(n/20);
+function calc(items,m){let sub=0,cq={},disc=[];
+ items.forEach(i=>{const p=prod(i.id);sub+=p.price*i.q;cq[p.cat]=(cq[p.cat]||0)+i.q});
+ if(m)S.promos.forEach(r=>{
+  if(r.k==="pct"&&sub>=r.min)disc.push([r.t,Math.round(sub*r.v)/100]);
+  if(r.k==="off"&&sub>=r.min)disc.push([r.t,+r.v]);
+  if(r.k==="cat"&&r.q>0&&(cq[r.cat]||0)>=r.q)disc.push([r.t,+r.v])});
+ return{sub,disc,net:Math.max(0,sub-disc.reduce((a,b)=>a+b[1],0))}}
+function nav(){const m=cur?mem(cur):null;
+ $("#nav").innerHTML=m?`<span class="mu">${esc(m.name)} · ⭐ ${m.pts} แต้ม</span><button data-a="out">ออกจากระบบ</button>`:`<button data-a="login">เข้าสู่ระบบ</button><button class="p" data-a="reg">สมัครสมาชิก</button>`}
+function render(){nav();
+ const cs=["ทั้งหมด",...new Set(S.products.map(p=>p.cat))];
+ $("#app").innerHTML=`<div class="hero"><h1>ยินดีต้อนรับสู่ รุ่งอรุณ มินิมาร์ท</h1><div>สินค้าอุปโภคบริโภคครบ ราคาเป็นกันเอง</div><span class="rule">⭐ ซื้อทุก 20 บาท รับ 1 แต้ม</span></div>
+ <h2>🎁 โปรโมชั่นสำหรับสมาชิก</h2><div class="promos">${S.promos.map(r=>`<div class="promo"><b>${esc(r.t)}</b><div class="mu">${esc(r.d)}</div></div>`).join("")||`<p class="mu">ยังไม่มีโปรโมชั่น</p>`}</div>
+ ${cur?"":`<p class="mu">สมัครสมาชิกหรือเข้าสู่ระบบเพื่อรับส่วนลดและสะสมแต้ม</p>`}
+ <div class="lay"><section><div class="tools"><input id="q" placeholder="ค้นหาสินค้า…" value="${esc(q)}"><select id="cat">${cs.map(c=>`<option ${c===cat?"selected":""}>${esc(c)}</option>`).join("")}</select></div><div class="grid" id="grid"></div></section><aside class="panel" id="cart"></aside></div>`;
+ grid();cartBox()}
+function grid(){
+ $("#grid").innerHTML=S.products.filter(p=>(cat==="ทั้งหมด"||p.cat===cat)&&p.name.includes(q.trim())).map(p=>{const d=Math.round((new Date(p.exp)-NOW)/864e5);
+ return `<div class="card"><div class="pic">${pic(p)}</div><h3>${esc(p.name)}</h3><div class="price">${B(p.price)}</div>
+ <div class="mu">เหลือ ${p.stock} ชิ้น ${p.stock<=10?'<span class="tag">ใกล้หมด</span>':""}</div>
+ <div class="mu">หมดอายุ ${fd(p.exp)} ${p.exp&&d<=14?'<span class="tag">ใกล้หมดอายุ</span>':""}</div>
+ <button class="p" data-a="add" data-v="${p.id}" ${p.stock<1?"disabled":""}>${p.stock<1?"สินค้าหมด":"+ เพิ่มลงตะกร้า"}</button></div>`}).join("")||`<p class="mu">ไม่พบสินค้า</p>`}
+function cartBox(){const m=cur?mem(cur):null,c=calc(cart,m);
+ $("#cart").innerHTML=`<h2>🧺 ตะกร้าของฉัน</h2>${cart.map(i=>{const p=prod(i.id);return `<div class="row"><span>${pic(p,22)} ${esc(p.name)}<br><span class="mu">${B(p.price)}</span></span><span class="q"><button data-a="c-" data-v="${i.id}">−</button>${i.q}<button data-a="c+" data-v="${i.id}">+</button></span></div>`}).join("")||`<p class="mu">ยังไม่มีสินค้า</p>`}
+ ${cart.length?`<div class="line"></div><div class="row"><span>รวม</span><span>${B(c.sub)}</span></div>${c.disc.map(d=>`<div class="row ok"><span>${esc(d[0])}</span><span>−${B(d[1])}</span></div>`).join("")}${m?"":`<div class="mu">* โปรโมชั่นสำหรับสมาชิกเท่านั้น</div>`}
+ <div class="row"><b>ยอดสุทธิ</b><span class="tot">${B(c.net)}</span></div>${m?`<div class="mu">จะได้รับ ${pts(c.net)} แต้ม</div>`:""}
+ <button class="p" style="width:100%;margin-top:8px" data-a="send">ส่งให้พนักงานคิดเงิน</button>`:""}${msg?`<p class="ok">${msg}</p>`:""}`}
+const modal=h=>{$("#modal").innerHTML=h?`<div class="modal"><div class="box">${h}</div></div>`:""};
+const authForm=r=>`<h2>${r?"สมัครสมาชิก":"เข้าสู่ระบบสมาชิก"}</h2>${r?`<label>ชื่อ-นามสกุล</label><input id="fn">`:""}<label>เบอร์โทรศัพท์</label><input id="fp" inputmode="numeric"><label>รหัสผ่าน</label><input id="fw" type="password"><p class="bad" id="err"></p>
+ <button class="p" style="width:100%" data-a="${r?"doreg":"dologin"}">${r?"สมัครสมาชิก":"เข้าสู่ระบบ"}</button><button style="width:100%;margin-top:6px" data-a="x">ปิด</button>${r?"":`<p class="mu">ทดลอง: 0812345678 / 1234</p>`}`;
+function chg(id,d){const i=cart.findIndex(x=>x.id===id);if(i<0)return;const n=cart[i].q+d;if(n<1)cart.splice(i,1);else if(n<=prod(id).stock)cart[i].q=n}
+function act(a,v){
+ if(a==="login"||a==="reg")return modal(authForm(a==="reg"));
+ if(a==="x")return modal("");
+ if(a==="out"){cur=null;cart=[];render();return}
+ if(a==="doreg"){const n=$("#fn").value.trim(),p=$("#fp").value.trim(),w=$("#fw").value;
+  if(!n||!/^0\d{8,9}$/.test(p)||w.length<4)return $("#err").textContent="กรอกข้อมูลให้ครบ (เบอร์ 9–10 หลัก, รหัสผ่านอย่างน้อย 4 ตัว)";
+  if(mem(p))return $("#err").textContent="เบอร์นี้เป็นสมาชิกแล้ว";
+  fetch(API+"?action=register",{method:"POST",body:JSON.stringify({phone:p,name:n,pw:w})}).then(r=>r.json()).then(r=>{if(r.error)return $("#err").textContent="เบอร์นี้เป็นสมาชิกแล้ว";S.members.push({phone:p,name:n,pw:w,pts:0});cur=p;modal("");render()});return}
+ if(a==="dologin"){const m=mem($("#fp").value.trim());if(!m||m.pw!==$("#fw").value)return $("#err").textContent="เบอร์โทรหรือรหัสผ่านไม่ถูกต้อง";cur=m.phone;modal("");render();return}
+ if(a==="add"){const i=cart.find(x=>x.id===v);if(i)chg(v,1);else cart.push({id:v,q:1});msg="";cartBox();return}
+ if(a==="c+"||a==="c-"){chg(v,a==="c+"?1:-1);cartBox();return}
+ if(a==="send"){fetch(API+"?action=enqueue",{method:"POST",body:JSON.stringify({ph:cur,items:cart})}).then(r=>r.json()).then(r=>{msg="ส่งแล้ว! แจ้งหมายเลขคิว "+r.n+" ที่เคาน์เตอร์";cart=[];cartBox()})}}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(b)act(b.dataset.a,b.dataset.v)});
+document.addEventListener("input",e=>{if(e.target.id==="q"){q=e.target.value;grid()}});
+document.addEventListener("change",e=>{if(e.target.id==="cat"){cat=e.target.value;grid()}});
+boot();
+</script>
+</body>
+</html>
