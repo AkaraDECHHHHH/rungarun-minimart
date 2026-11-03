@@ -17,5 +17,9 @@ Thumbs.db
 *.log
 ngrok_output.txt
 
-# Uploaded images (optional - remove if you want to track images)
-# images/
+# Uploaded images
+images/
+uploads/
+
+# Downloads
+*.zip
